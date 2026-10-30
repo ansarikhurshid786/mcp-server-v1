@@ -46,6 +46,3 @@ async def execute_tools(
         arguments
     )
     return result
-
-if __name__ == "__main__":
-    main()
