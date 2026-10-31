@@ -43,6 +43,25 @@ async def planner(user_request, tools):
     tool_name = response.choices[0].message.content
     return tool_name.strip()
 
+async def generate_response(user_request, tool_result):
+    prompt = f"""
+    The user asked: {user_request}
+    The tool returned: {tool_result}
+    Answer naturally
+    """
+
+    response = client.chat.completions.create(
+        model=MODEL,
+        messages=[
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
+    )
+
+    return response
+
 async def main():
     #connect mcp server
     client = await connect()
@@ -64,6 +83,10 @@ async def main():
 
     tool_result = await execute_tools(client)
 
+    final_answer = generate_response(user_request, tool_result)
+    print()
+    print(final_answer)
+
 def build_tool_description(tools):
     descriptions = ""
     for tool in tools:
@@ -75,7 +98,6 @@ def build_tool_description(tools):
         ---------------------
         """
     return descriptions
-
 
 if __name__ == "__main__":
     asyncio.run(main())
