@@ -5,7 +5,7 @@ from datetime import datetime
 from fastmcp import FastMCP
 
 mcp = FastMCP(
-    "Time Server"
+    "MCP Server - has few tools"
 )
 
 @mcp.tool()
